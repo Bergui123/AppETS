@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "880663867096",
+    "project_id": "appets-579aa",
+    "storage_bucket": "appets-579aa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:880663867096:android:c1e206d1c3118fd20f31ad",
+        "android_client_info": {
+          "package_name": "com.example.appets"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzsqOijAWChdakiLMZlP1TaKpQyUgCQuM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
