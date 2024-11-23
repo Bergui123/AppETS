@@ -1,8 +1,12 @@
-import 'package:flutter/material.dart'; // Import Firebase Core
-import 'accountcreation/accountcreation.dart';  // Correct relative import
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'accountcreation/accountcreation.dart'; // Assuming you have this file in the correct path
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Firebase initialization
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 
@@ -25,8 +29,32 @@ class MyApp extends StatelessWidget {
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
 
+  Future<void> _signIn(BuildContext context, String username, String password) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: username,
+        password: password,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Logged In Successfully!')),
+      );
+
+      // Navigate to the desired page after successful sign-in
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage())); // Replace HomePage with your actual page
+
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.message}')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    TextEditingController usernameController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sign In'),
@@ -37,16 +65,18 @@ class SignInPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const TextField(
-              decoration: InputDecoration(
+            TextField(
+              controller: usernameController,
+              decoration: const InputDecoration(
                 labelText: 'Username',
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16),
-            const TextField(
+            TextField(
+              controller: passwordController,
               obscureText: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Password',
                 border: OutlineInputBorder(),
               ),
@@ -54,14 +84,21 @@ class SignInPage extends StatelessWidget {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                // Sign-in logic goes here
+                String username = usernameController.text.trim();
+                String password = passwordController.text.trim();
+                if (username.isNotEmpty && password.isNotEmpty) {
+                  _signIn(context, username, password);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Please fill in both fields')),
+                  );
+                }
               },
               child: const Text('Sign In'),
             ),
             const SizedBox(height: 8),
             TextButton(
               onPressed: () {
-                // Navigate to the account creation page
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const AccountCreationPage()),
