@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:appets/main.dart'; // Import your main.dart file where MyApp is defined
+import 'package:appets/main.dart'; // Importation correcte de MyApp
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp()); // Use MyApp() instead of main()
+    // Construire l'application et afficher le premier frame.
+    await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
+    // Vérifier que le compteur commence à 0.
     expect(find.text('0'), findsOneWidget);
     expect(find.text('1'), findsNothing);
 
-    // Tap the '+' icon and trigger a frame.
+    // Appuyer sur l'icône "+" et rafraîchir le widget.
     await tester.tap(find.byIcon(Icons.add));
     await tester.pump();
 
-    // Verify that our counter has incremented.
+    // Vérifier que le compteur est incrémenté.
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
   });

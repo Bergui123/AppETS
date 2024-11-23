@@ -41,7 +41,10 @@ class SignInPage extends StatelessWidget {
       );
 
       // Navigate to the desired page after successful sign-in
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage())); // Replace HomePage with your actual page
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()), // Replace HomePage with your actual page
+      );
 
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -109,6 +112,18 @@ class SignInPage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Home Page')),
+      body: const Center(child: Text('Welcome to the Home Page!')),
     );
   }
 }
